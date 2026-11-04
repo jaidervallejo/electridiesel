@@ -6,6 +6,7 @@ export default defineConfig({
 	// [PROVISIONAL] Reemplazar por el dominio definitivo (también en src/config/site.ts,
 	// public/robots.txt y public/sitemap.xml).
 	site: 'https://jaidervallejo.github.io/electridiesel/',
+	base: '/electridiesel',
 	trailingSlash: 'ignore',
 	build: {
 		inlineStylesheets: 'auto',
