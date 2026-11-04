@@ -1,0 +1,142 @@
+---
+import Icon from '../ui/Icon.astro';
+import SmartImage from '../ui/SmartImage.astro';
+import type { Brand } from '../../types';
+
+interface Props {
+	brand: Brand;
+	hint: string;
+}
+
+const { brand, hint } = Astro.props;
+const dialogId = `brand-dialog-${brand.id}`;
+---
+
+<button
+	type="button"
+	class="brand-card"
+	aria-haspopup="dialog"
+	aria-controls={dialogId}
+	data-dialog-open={dialogId}
+>
+	<span class="brand-card__media">
+		{
+			brand.image ? (
+				<SmartImage {...brand.image} class="brand-card__img" />
+			) : (
+				<span class="brand-card__placeholder" aria-hidden="true">
+					<Icon name={brand.icon} size={56} strokeWidth={1.3} />
+				</span>
+			)
+		}
+	</span>
+	<span class="brand-card__footer">
+		<Icon name={brand.icon} size={22} class="brand-card__icon" />
+		<span class="brand-card__text">
+			<span class="brand-card__name">{brand.name}</span>
+			<span class="brand-card__hint">{hint}</span>
+		</span>
+		<Icon name="arrow-right" size={18} class="brand-card__arrow" />
+	</span>
+</button>
+
+<style>
+	.brand-card {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		height: 100%;
+		padding: 0;
+		border: 0;
+		border-radius: var(--radius-md);
+		overflow: hidden;
+		background: var(--color-yellow);
+		color: var(--color-black);
+		text-align: left;
+		cursor: pointer;
+		box-shadow: var(--shadow-card);
+		transition:
+			transform var(--transition),
+			box-shadow var(--transition);
+	}
+
+	.brand-card:hover {
+		transform: translateY(-4px);
+		box-shadow: var(--shadow-lift);
+	}
+
+	.brand-card:focus-visible {
+		outline-color: var(--color-black);
+		box-shadow: 0 0 0 3px var(--color-yellow);
+	}
+
+	.brand-card__media {
+		display: block;
+		aspect-ratio: 1 / 1;
+		background: radial-gradient(circle at 50% 40%, var(--color-dark-3), var(--color-black) 75%);
+	}
+
+	.brand-card__media :global(.brand-card__img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.brand-card__placeholder {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		height: 100%;
+		color: var(--color-gray-300);
+	}
+
+	.brand-card__footer {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		flex: 1;
+		padding: 0.85rem 0.85rem;
+	}
+
+	.brand-card__text {
+		display: grid;
+		flex: 1;
+		min-width: 0;
+	}
+
+	.brand-card__name {
+		font-weight: 700;
+		font-size: 0.92rem;
+		line-height: 1.25;
+	}
+
+	.brand-card__hint {
+		font-size: 0.75rem;
+		font-weight: 500;
+	}
+
+	.brand-card__arrow {
+		transition: transform var(--transition);
+	}
+
+	.brand-card:hover .brand-card__arrow {
+		transform: translateX(3px);
+	}
+
+	@media (max-width: 640px) {
+		.brand-card__footer {
+			padding: 0.6rem 0.7rem;
+			gap: 0.45rem;
+		}
+
+		.brand-card__name {
+			font-size: 0.85rem;
+		}
+
+		.brand-card__placeholder :global(svg) {
+			width: 44px;
+			height: 44px;
+		}
+	}
+</style>

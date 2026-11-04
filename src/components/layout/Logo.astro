@@ -1,0 +1,22 @@
+---
+import { site } from '../../config/site';
+
+interface Props {
+	size?: number;
+	class?: string;
+}
+
+const { size = 64, class: className } = Astro.props;
+---
+
+<a href="#inicio" class:list={['logo', className]} aria-label={site.logo.alt}>
+	<img src={site.logo.src} alt="" width={size} height={size} decoding="async" />
+</a>
+
+<style>
+	.logo {
+		display: inline-flex;
+		border-radius: 50%;
+		flex-shrink: 0;
+	}
+</style>

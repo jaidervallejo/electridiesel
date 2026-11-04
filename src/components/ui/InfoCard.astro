@@ -1,0 +1,169 @@
+---
+/**
+ * Tarjeta informativa reutilizable (servicios, ¿por qué elegirnos?, misión/visión).
+ * Variantes: `outline-dark` (servicios), `light` (por qué elegirnos), `feature` (misión/visión).
+ */
+import Icon from './Icon.astro';
+import type { InfoItem } from '../../types';
+
+interface Props extends InfoItem {
+	variant?: 'outline-dark' | 'light' | 'feature';
+	headingLevel?: 'h3' | 'h4';
+}
+
+const { icon, title, description, variant = 'light', headingLevel: Tag = 'h3' } = Astro.props;
+---
+
+<article class:list={['info-card', `info-card--${variant}`]}>
+	<span class="info-card__icon">
+		<Icon name={icon} size={variant === 'light' ? 44 : 38} strokeWidth={1.6} />
+	</span>
+	<div class="info-card__body">
+		<Tag class="info-card__title">{title}</Tag>
+		<p class="info-card__desc">{description}</p>
+	</div>
+</article>
+
+<style>
+	.info-card {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		height: 100%;
+		padding: 1.5rem 1.25rem;
+		border-radius: var(--radius-md);
+	}
+
+	.info-card__icon {
+		color: var(--color-yellow);
+		display: inline-flex;
+	}
+
+	.info-card__body {
+		display: grid;
+		gap: 0.6rem;
+	}
+
+	.info-card__title {
+		font-size: 1.05rem;
+		font-weight: 700;
+	}
+
+	.info-card__desc {
+		font-size: 0.9rem;
+		line-height: 1.55;
+	}
+
+	/* Servicios: oscuro con borde amarillo */
+	.info-card--outline-dark {
+		background: var(--color-dark-2);
+		border: 1px solid var(--color-yellow);
+		color: var(--color-white);
+	}
+
+	.info-card--outline-dark .info-card__desc {
+		color: var(--color-text-inverse-muted);
+	}
+
+	/* ¿Por qué elegirnos?: blanco centrado */
+	.info-card--light {
+		background: var(--color-white);
+		box-shadow: var(--shadow-card);
+		align-items: center;
+		text-align: center;
+		padding: 2rem 1.5rem;
+	}
+
+	.info-card--light .info-card__icon {
+		color: var(--color-yellow-strong);
+	}
+
+	.info-card--light .info-card__desc {
+		color: var(--color-text-muted);
+	}
+
+	/* Misión y visión */
+	.info-card--feature {
+		flex-direction: row;
+		align-items: flex-start;
+		gap: 1.25rem;
+		padding: 2rem;
+		background: var(--color-white);
+		border-left: 4px solid var(--color-yellow);
+		box-shadow: var(--shadow-card);
+	}
+
+	.info-card--feature .info-card__icon {
+		flex-shrink: 0;
+		width: 64px;
+		height: 64px;
+		align-items: center;
+		justify-content: center;
+		border-radius: 50%;
+		background: var(--color-black);
+	}
+
+	.info-card--feature .info-card__title {
+		font-size: 1.35rem;
+	}
+
+	.info-card--feature .info-card__desc {
+		color: var(--color-text-muted);
+		font-size: 0.98rem;
+	}
+
+	/* Móvil: servicios y razones como lista compacta (igual que la referencia) */
+	@media (max-width: 640px) {
+		.info-card--outline-dark,
+		.info-card--light {
+			flex-direction: row;
+			align-items: center;
+			text-align: left;
+			gap: 1rem;
+			padding: 0.9rem 1rem;
+		}
+
+		.info-card--outline-dark .info-card__icon,
+		.info-card--light .info-card__icon {
+			flex-shrink: 0;
+			width: 44px;
+			height: 44px;
+			align-items: center;
+			justify-content: center;
+			border-radius: var(--radius-sm);
+			background: var(--color-yellow);
+			color: var(--color-black);
+		}
+
+		.info-card--outline-dark .info-card__icon :global(svg),
+		.info-card--light .info-card__icon :global(svg) {
+			width: 26px;
+			height: 26px;
+		}
+
+		.info-card--light .info-card__body,
+		.info-card--outline-dark .info-card__body {
+			gap: 0.2rem;
+		}
+
+		.info-card--outline-dark .info-card__title,
+		.info-card--light .info-card__title {
+			font-size: 0.95rem;
+		}
+
+		.info-card--outline-dark .info-card__desc,
+		.info-card--light .info-card__desc {
+			font-size: 0.82rem;
+		}
+
+		.info-card--feature {
+			padding: 1.5rem 1.25rem;
+			gap: 1rem;
+		}
+
+		.info-card--feature .info-card__icon {
+			width: 52px;
+			height: 52px;
+		}
+	}
+</style>

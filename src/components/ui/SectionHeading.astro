@@ -1,0 +1,76 @@
+---
+interface Props {
+	eyebrow?: string;
+	title: string;
+	description?: string;
+	/** Nivel del encabezado (h2 por defecto). */
+	as?: 'h2' | 'h3';
+	id?: string;
+	align?: 'start' | 'center';
+	tone?: 'light' | 'dark';
+}
+
+const { eyebrow, title, description, as: Tag = 'h2', id, align = 'start', tone = 'light' } = Astro.props;
+---
+
+<header class:list={['heading', `heading--${align}`, `heading--${tone}`]}>
+	{eyebrow && <p class="heading__eyebrow">{eyebrow}</p>}
+	<Tag id={id} class="heading__title">{title}</Tag>
+	{description && <p class="heading__desc">{description}</p>}
+</header>
+
+<style>
+	.heading {
+		display: grid;
+		gap: 0.75rem;
+		max-width: 620px;
+		margin-bottom: clamp(1.75rem, 4vw, 2.5rem);
+	}
+
+	.heading--center {
+		text-align: center;
+		margin-inline: auto;
+		justify-items: center;
+	}
+
+	.heading__eyebrow {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.75rem;
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--color-text-muted);
+	}
+
+	.heading__eyebrow::before {
+		content: '';
+		width: 28px;
+		height: 3px;
+		border-radius: 2px;
+		background: var(--color-yellow);
+	}
+
+	.heading__title {
+		font-size: clamp(1.6rem, 3.4vw, 2.25rem);
+		color: var(--color-black);
+	}
+
+	.heading__desc {
+		color: var(--color-text-muted);
+		font-size: 1rem;
+	}
+
+	.heading--dark .heading__eyebrow {
+		color: var(--color-text-inverse-muted);
+	}
+
+	.heading--dark .heading__title {
+		color: var(--color-white);
+	}
+
+	.heading--dark .heading__desc {
+		color: var(--color-text-inverse-muted);
+	}
+</style>

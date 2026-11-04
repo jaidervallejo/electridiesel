@@ -1,0 +1,302 @@
+---
+import Icon from '../ui/Icon.astro';
+import SmartImage from '../ui/SmartImage.astro';
+import WhatsAppButton from '../ui/WhatsAppButton.astro';
+import { whatsapp } from '../../config/whatsapp';
+import { fillTemplate } from '../../utils/whatsapp';
+import type { Brand } from '../../types';
+
+interface Props {
+	brand: Brand;
+}
+
+const { brand } = Astro.props;
+const dialogId = `brand-dialog-${brand.id}`;
+const titleId = `${dialogId}-title`;
+const descId = `${dialogId}-desc`;
+const brandMessage = fillTemplate(whatsapp.messages.brand, { brand: brand.name });
+---
+
+<dialog id={dialogId} class="brand-dialog" aria-labelledby={titleId} aria-describedby={descId} data-dialog>
+	<div class="brand-dialog__panel">
+		<header class="brand-dialog__header">
+			<span class="brand-dialog__badge" aria-hidden="true">
+				<Icon name={brand.icon} size={26} />
+			</span>
+			<div class="brand-dialog__heading">
+				<p class="brand-dialog__eyebrow">Repuestos de la marca</p>
+				<h3 id={titleId} class="brand-dialog__title">{brand.name}</h3>
+			</div>
+			<button type="button" class="brand-dialog__close" data-dialog-close aria-label="Cerrar">
+				<Icon name="close" size={24} />
+			</button>
+		</header>
+
+		<div class="brand-dialog__body">
+			<p id={descId} class="brand-dialog__summary">{brand.summary}</p>
+
+			<ul role="list" class="product-list">
+				{
+					brand.products.map((product) => (
+						<li class="product">
+							{product.image ? (
+								<SmartImage {...product.image} class="product__img" width={64} height={64} />
+							) : (
+								<span class="product__dot" aria-hidden="true">
+									<Icon name="check" size={18} strokeWidth={2.4} />
+								</span>
+							)}
+							<div class="product__info">
+								<h4 class="product__name">{product.name}</h4>
+								<p class="product__desc">{product.description}</p>
+								{product.reference && <p class="product__ref">Ref.: {product.reference}</p>}
+							</div>
+							<WhatsAppButton
+								label="Cotizar"
+								ariaLabel={`Cotizar ${product.name} de ${brand.name} por WhatsApp`}
+								message={fillTemplate(whatsapp.messages.product, {
+									brand: brand.name,
+									product: product.name,
+								})}
+								size="sm"
+								variant="dark"
+								class="product__cta"
+							/>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+
+		<footer class="brand-dialog__footer">
+			<p class="brand-dialog__note">
+				Se abrirá WhatsApp con un mensaje prellenado; podrás revisarlo antes de enviarlo.
+			</p>
+			<WhatsAppButton label={`Cotizar repuestos ${brand.name}`} message={brandMessage} block />
+		</footer>
+	</div>
+</dialog>
+
+<style>
+	.brand-dialog {
+		width: min(680px, calc(100% - 2rem));
+		max-height: min(86vh, 760px);
+		padding: 0;
+		border: 0;
+		border-radius: var(--radius-lg);
+		background: var(--color-white);
+		color: var(--color-text);
+		box-shadow: 0 24px 60px rgb(0 0 0 / 0.45);
+		overflow: hidden;
+	}
+
+	.brand-dialog::backdrop {
+		background: rgb(0 0 0 / 0.7);
+		backdrop-filter: blur(2px);
+	}
+
+	.brand-dialog[open] {
+		animation: dialog-in 200ms ease-out;
+	}
+
+	@keyframes dialog-in {
+		from {
+			opacity: 0;
+			transform: translateY(16px);
+		}
+	}
+
+	.brand-dialog__panel {
+		display: flex;
+		flex-direction: column;
+		max-height: inherit;
+	}
+
+	.brand-dialog__header {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		padding: 1.25rem 1.5rem;
+		background: var(--color-black);
+		color: var(--color-white);
+		border-bottom: 3px solid var(--color-yellow);
+	}
+
+	.brand-dialog__badge {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 48px;
+		height: 48px;
+		border-radius: var(--radius-sm);
+		background: var(--color-yellow);
+		color: var(--color-black);
+		flex-shrink: 0;
+	}
+
+	.brand-dialog__heading {
+		flex: 1;
+		min-width: 0;
+	}
+
+	.brand-dialog__eyebrow {
+		font-size: 0.75rem;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--color-text-inverse-muted);
+	}
+
+	.brand-dialog__title {
+		font-size: 1.5rem;
+		color: var(--color-white);
+	}
+
+	.brand-dialog__close {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 44px;
+		height: 44px;
+		border: 1px solid var(--color-dark-3);
+		border-radius: 50%;
+		background: var(--color-dark-2);
+		color: var(--color-white);
+		cursor: pointer;
+		flex-shrink: 0;
+		transition: background-color var(--transition), color var(--transition);
+	}
+
+	.brand-dialog__close:hover {
+		background: var(--color-yellow);
+		color: var(--color-black);
+	}
+
+	.brand-dialog__body {
+		flex: 1;
+		overflow-y: auto;
+		overscroll-behavior: contain;
+		padding: 1.25rem 1.5rem;
+	}
+
+	.brand-dialog__summary {
+		color: var(--color-text-muted);
+		margin-bottom: 1rem;
+	}
+
+	.product-list {
+		display: grid;
+		gap: 0.75rem;
+	}
+
+	.product {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		padding: 0.9rem 1rem;
+		border: 1px solid var(--color-gray-100);
+		border-left: 4px solid var(--color-yellow);
+		border-radius: var(--radius-sm);
+		background: var(--color-light);
+	}
+
+	.product__dot {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 32px;
+		height: 32px;
+		border-radius: 50%;
+		background: var(--color-yellow);
+		color: var(--color-black);
+		flex-shrink: 0;
+	}
+
+	.product :global(.product__img) {
+		width: 64px;
+		height: 64px;
+		object-fit: cover;
+		border-radius: var(--radius-sm);
+	}
+
+	.product__info {
+		flex: 1;
+		min-width: 0;
+	}
+
+	.product__name {
+		font-size: 1rem;
+		font-weight: 700;
+		color: var(--color-black);
+	}
+
+	.product__desc,
+	.product__ref {
+		font-size: 0.875rem;
+		color: var(--color-text-muted);
+	}
+
+	.brand-dialog__footer {
+		display: grid;
+		gap: 0.75rem;
+		padding: 1rem 1.5rem 1.25rem;
+		border-top: 1px solid var(--color-gray-100);
+		background: var(--color-white);
+	}
+
+	.brand-dialog__note {
+		font-size: 0.8rem;
+		color: var(--color-text-muted);
+	}
+
+	/* Pantallas de poca altura: todo el panel se desplaza */
+	@media (max-height: 560px) {
+		.brand-dialog__panel {
+			overflow-y: auto;
+		}
+
+		.brand-dialog__body {
+			flex: none;
+			overflow: visible;
+		}
+	}
+
+	/* Móvil: panel inferior */
+	@media (max-width: 640px) {
+		.brand-dialog {
+			width: 100%;
+			max-width: 100%;
+			max-height: 90dvh;
+			margin: auto 0 0;
+			border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+		}
+
+		.brand-dialog[open] {
+			animation-name: sheet-in;
+		}
+
+		@keyframes sheet-in {
+			from {
+				transform: translateY(100%);
+			}
+		}
+
+		.brand-dialog__header,
+		.brand-dialog__body,
+		.brand-dialog__footer {
+			padding-inline: 1rem;
+		}
+
+		.brand-dialog__footer {
+			padding-bottom: max(1rem, env(safe-area-inset-bottom));
+		}
+
+		.product {
+			flex-wrap: wrap;
+			gap: 0.75rem;
+		}
+
+		.product :global(.product__cta) {
+			width: 100%;
+		}
+	}
+</style>

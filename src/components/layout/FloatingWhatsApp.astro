@@ -1,0 +1,94 @@
+---
+/** Botón flotante de WhatsApp, fijo en la esquina inferior derecha. */
+import Icon from '../ui/Icon.astro';
+import { whatsapp } from '../../config/whatsapp';
+import { floatingWhatsApp } from '../../data/content';
+import { buildWhatsAppUrl } from '../../utils/whatsapp';
+
+interface Props {
+	message?: string;
+	label?: string;
+}
+
+const { message = whatsapp.messages.floating, label = floatingWhatsApp.label } = Astro.props;
+const href = buildWhatsAppUrl(message);
+---
+
+<a
+	class="wa-float"
+	href={href}
+	target="_blank"
+	rel="noopener noreferrer"
+	aria-label={`${label} (abre WhatsApp en una nueva pestaña)`}
+>
+	<Icon name="whatsapp" size={32} strokeWidth={1.8} />
+	<span class="wa-float__tooltip" aria-hidden="true">{label}</span>
+</a>
+
+<style>
+	.wa-float {
+		position: fixed;
+		right: max(1rem, env(safe-area-inset-right));
+		bottom: max(1rem, env(safe-area-inset-bottom));
+		z-index: 90;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 60px;
+		height: 60px;
+		border-radius: 50%;
+		background: var(--color-whatsapp);
+		color: var(--color-white);
+		box-shadow: 0 8px 24px rgb(0 0 0 / 0.3);
+		text-decoration: none;
+		transition: transform var(--transition), box-shadow var(--transition);
+	}
+
+	.wa-float:hover {
+		transform: scale(1.06);
+		box-shadow: 0 10px 28px rgb(0 0 0 / 0.35);
+	}
+
+	.wa-float:focus-visible {
+		outline-color: var(--color-black);
+		box-shadow: 0 0 0 3px var(--color-yellow);
+	}
+
+	.wa-float__tooltip {
+		position: absolute;
+		right: calc(100% + 0.75rem);
+		white-space: nowrap;
+		padding: 0.45rem 0.8rem;
+		border-radius: var(--radius-sm);
+		background: var(--color-black);
+		color: var(--color-white);
+		font-size: 0.85rem;
+		font-weight: 600;
+		opacity: 0;
+		transform: translateX(6px);
+		pointer-events: none;
+		transition: opacity var(--transition), transform var(--transition);
+	}
+
+	.wa-float:hover .wa-float__tooltip,
+	.wa-float:focus-visible .wa-float__tooltip {
+		opacity: 1;
+		transform: none;
+	}
+
+	@media (max-width: 640px) {
+		.wa-float {
+			width: 56px;
+			height: 56px;
+		}
+
+		.wa-float__tooltip {
+			display: none;
+		}
+	}
+
+	/* Oculta el botón flotante mientras haya un diálogo abierto */
+	:global(body.is-locked) .wa-float {
+		display: none;
+	}
+</style>

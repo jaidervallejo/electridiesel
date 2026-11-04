@@ -1,0 +1,60 @@
+---
+import WhatsAppButton from '../ui/WhatsAppButton.astro';
+import { quoteCta } from '../../data/content';
+import { whatsapp } from '../../config/whatsapp';
+---
+
+<section id="cotizar" class="quote on-yellow" aria-labelledby="quote-title">
+	<div class="container quote__inner">
+		<div class="quote__text">
+			<h2 id="quote-title" class="quote__title">{quoteCta.title}</h2>
+			<p class="quote__subtitle">{quoteCta.subtitle}</p>
+		</div>
+		<WhatsAppButton
+			label={quoteCta.buttonLabel}
+			message={whatsapp.messages.general}
+			variant="dark"
+			size="lg"
+			class="quote__btn"
+		/>
+	</div>
+</section>
+
+<style>
+	.quote {
+		background:
+			linear-gradient(100deg, var(--color-yellow) 55%, var(--color-yellow-strong) 100%);
+		color: var(--color-black);
+	}
+
+	.quote__inner {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1.5rem 2.5rem;
+		padding-block: clamp(2rem, 4vw, 2.75rem);
+	}
+
+	.quote__title {
+		font-size: clamp(1.5rem, 3vw, 2.1rem);
+		color: var(--color-black);
+	}
+
+	.quote__subtitle {
+		font-size: clamp(1rem, 1.6vw, 1.2rem);
+		font-weight: 600;
+		margin-top: 0.25rem;
+	}
+
+	@media (max-width: 720px) {
+		.quote__inner {
+			flex-direction: column;
+			align-items: stretch;
+			text-align: left;
+		}
+
+		.quote__inner :global(.quote__btn) {
+			width: 100%;
+		}
+	}
+</style>

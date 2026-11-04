@@ -1,0 +1,45 @@
+---
+/**
+ * Imagen reutilizable: usa <Image> de Astro para imágenes locales (src/assets, optimizadas)
+ * y <img> para rutas públicas (/images/...). Si `alt` está vacío se trata como decorativa.
+ */
+import { Image } from 'astro:assets';
+import type { ImageData } from '../../types';
+
+interface Props extends ImageData {
+	class?: string;
+	loading?: 'lazy' | 'eager';
+	fetchpriority?: 'high' | 'low' | 'auto';
+	sizes?: string;
+}
+
+const { src, alt, width, height, class: className, loading = 'lazy', fetchpriority, sizes } = Astro.props;
+const decorative = alt.trim() === '';
+---
+
+{
+	typeof src === 'string' ? (
+		<img
+			src={src}
+			alt={alt}
+			width={width}
+			height={height}
+			loading={loading}
+			decoding="async"
+			fetchpriority={fetchpriority}
+			class={className}
+			aria-hidden={decorative ? 'true' : undefined}
+		/>
+	) : (
+		<Image
+			src={src}
+			alt={alt}
+			width={width}
+			height={height}
+			loading={loading}
+			fetchpriority={fetchpriority}
+			sizes={sizes}
+			class={className}
+		/>
+	)
+}

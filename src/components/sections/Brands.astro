@@ -1,0 +1,53 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+import BrandCard from '../brands/BrandCard.astro';
+import BrandDialog from '../brands/BrandDialog.astro';
+import { brands, brandsSection } from '../../data/brands';
+---
+
+<section id="repuestos" class="section brands" aria-labelledby="brands-title">
+	<div class="container">
+		<SectionHeading
+			id="brands-title"
+			eyebrow={brandsSection.eyebrow}
+			title={brandsSection.title}
+			description={brandsSection.description}
+		/>
+
+		<ul role="list" class="brands__grid">
+			{
+				brands.map((brand) => (
+					<li>
+						<BrandCard brand={brand} hint={brandsSection.cardHint} />
+					</li>
+				))
+			}
+		</ul>
+	</div>
+
+	{brands.map((brand) => <BrandDialog brand={brand} />)}
+</section>
+
+<script>
+	import { initDialogs } from '../../scripts/dialogs';
+	initDialogs();
+</script>
+
+<style>
+	.brands {
+		background: var(--color-light);
+	}
+
+	.brands__grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+		gap: 0.9rem;
+	}
+
+	@media (max-width: 640px) {
+		.brands__grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 0.65rem;
+		}
+	}
+</style>

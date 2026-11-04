@@ -1,0 +1,152 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import Icon from './Icon.astro';
+import type { IconName } from './icons';
+
+import type { ButtonSize, ButtonVariant } from '../../types';
+
+interface Props extends Omit<HTMLAttributes<'a'>, 'class'> {
+	href?: string;
+	variant?: ButtonVariant;
+	size?: ButtonSize;
+	iconStart?: IconName;
+	iconEnd?: IconName;
+	block?: boolean;
+	external?: boolean;
+	type?: 'button' | 'submit';
+	class?: string;
+}
+
+const {
+	href,
+	variant = 'primary',
+	size = 'md',
+	iconStart,
+	iconEnd,
+	block = false,
+	external = false,
+	type = 'button',
+	class: className,
+	...rest
+} = Astro.props;
+
+const classes = ['btn', `btn--${variant}`, `btn--${size}`, block && 'btn--block', className];
+const externalAttrs = external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
+---
+
+{
+	href ? (
+		<a href={href} class:list={classes} {...externalAttrs} {...rest}>
+			{iconStart && <Icon name={iconStart} size={20} />}
+			<span><slot /></span>
+			{iconEnd && <Icon name={iconEnd} size={18} class="btn__end" />}
+		</a>
+	) : (
+		<button type={type} class:list={classes} {...(rest as HTMLAttributes<'button'>)}>
+			{iconStart && <Icon name={iconStart} size={20} />}
+			<span><slot /></span>
+			{iconEnd && <Icon name={iconEnd} size={18} class="btn__end" />}
+		</button>
+	)
+}
+
+<style>
+	.btn {
+		--btn-bg: var(--color-yellow);
+		--btn-fg: var(--color-black);
+		--btn-border: var(--color-yellow);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.6rem;
+		min-height: 48px;
+		padding: 0.75rem 1.4rem;
+		border: 2px solid var(--btn-border);
+		border-radius: var(--radius-sm);
+		background: var(--btn-bg);
+		color: var(--btn-fg);
+		font-weight: 700;
+		font-size: 0.95rem;
+		line-height: 1.2;
+		text-decoration: none;
+		cursor: pointer;
+		transition:
+			background-color var(--transition),
+			color var(--transition),
+			border-color var(--transition),
+			transform var(--transition);
+	}
+
+	.btn:hover {
+		transform: translateY(-1px);
+	}
+
+	.btn:hover .btn__end {
+		transform: translateX(3px);
+	}
+
+	.btn__end {
+		transition: transform var(--transition);
+	}
+
+	.btn--primary:hover {
+		--btn-bg: var(--color-yellow-strong);
+		--btn-border: var(--color-yellow-strong);
+	}
+
+	.btn--outline {
+		--btn-bg: transparent;
+		--btn-fg: var(--color-white);
+		--btn-border: rgb(255 255 255 / 0.85);
+	}
+
+	.btn--outline:hover {
+		--btn-bg: var(--color-white);
+		--btn-fg: var(--color-black);
+	}
+
+	.btn--dark {
+		--btn-bg: var(--color-black);
+		--btn-fg: var(--color-white);
+		--btn-border: var(--color-black);
+	}
+
+	.btn--dark:hover {
+		--btn-bg: var(--color-dark-3);
+		--btn-border: var(--color-dark-3);
+	}
+
+	.btn--whatsapp {
+		--btn-bg: var(--color-whatsapp);
+		--btn-fg: var(--color-black);
+		--btn-border: var(--color-whatsapp);
+	}
+
+	.btn--whatsapp:hover {
+		--btn-bg: #1ebe5a;
+		--btn-border: #1ebe5a;
+	}
+
+	.btn--ghost {
+		--btn-bg: transparent;
+		--btn-fg: currentColor;
+		--btn-border: transparent;
+		padding-inline: 0.5rem;
+	}
+
+	.btn--sm {
+		min-height: 40px;
+		padding: 0.5rem 1rem;
+		font-size: 0.875rem;
+	}
+
+	.btn--lg {
+		min-height: 54px;
+		padding: 0.9rem 1.75rem;
+		font-size: 1rem;
+	}
+
+	.btn--block {
+		width: 100%;
+	}
+</style>

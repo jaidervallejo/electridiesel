@@ -1,0 +1,54 @@
+---
+/**
+ * Botón/enlace reutilizable de WhatsApp.
+ * Genera https://wa.me/NUMERO?text=MENSAJE. El envío lo confirma el visitante en WhatsApp.
+ */
+import Button from './Button.astro';
+import type { ButtonSize, ButtonVariant } from '../../types';
+import { whatsapp } from '../../config/whatsapp';
+import { buildWhatsAppUrl } from '../../utils/whatsapp';
+
+interface Props {
+	/** Texto visible del botón. */
+	label: string;
+	/** Mensaje prellenado. Por defecto, el mensaje general de cotización. */
+	message?: string;
+	/** Teléfono (solo dígitos con código de país). Por defecto, el configurado. */
+	phone?: string;
+	variant?: ButtonVariant;
+	size?: ButtonSize;
+	block?: boolean;
+	showIcon?: boolean;
+	/** Texto accesible ampliado (p. ej. incluir el producto). */
+	ariaLabel?: string;
+	class?: string;
+}
+
+const {
+	label,
+	message = whatsapp.messages.general,
+	phone = whatsapp.phone,
+	variant = 'whatsapp',
+	size = 'md',
+	block = false,
+	showIcon = true,
+	ariaLabel,
+	class: className,
+} = Astro.props;
+
+const href = buildWhatsAppUrl(message, phone);
+const accessibleLabel = `${ariaLabel ?? label} (abre WhatsApp en una nueva pestaña)`;
+---
+
+<Button
+	href={href}
+	variant={variant}
+	size={size}
+	block={block}
+	external
+	iconStart={showIcon ? 'whatsapp' : undefined}
+	aria-label={accessibleLabel}
+	class={className}
+>
+	{label}
+</Button>

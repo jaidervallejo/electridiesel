@@ -1,0 +1,44 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+import InfoCard from '../ui/InfoCard.astro';
+import { reasons, whyUsSection } from '../../data/why-us';
+---
+
+<section id="por-que-elegirnos" class="section why-us" aria-labelledby="why-title">
+	<div class="container">
+		<SectionHeading
+			id="why-title"
+			eyebrow={whyUsSection.eyebrow}
+			title={whyUsSection.title}
+			description={whyUsSection.description}
+		/>
+		<ul role="list" class="why-us__grid">
+			{
+				reasons.map((reason) => (
+					<li>
+						<InfoCard {...reason} variant="light" />
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>
+
+<style>
+	.why-us {
+		background: var(--color-light);
+	}
+
+	.why-us__grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		gap: 1.25rem;
+	}
+
+	@media (max-width: 640px) {
+		.why-us__grid {
+			grid-template-columns: 1fr;
+			gap: 0.6rem;
+		}
+	}
+</style>

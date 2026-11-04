@@ -1,0 +1,47 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+import InfoCard from '../ui/InfoCard.astro';
+import { services, servicesSection } from '../../data/services';
+---
+
+<section id="servicios" class="section section--dark services" aria-labelledby="services-title">
+	<div class="container">
+		<SectionHeading
+			id="services-title"
+			tone="dark"
+			eyebrow={servicesSection.eyebrow}
+			title={servicesSection.title}
+			description={servicesSection.description}
+		/>
+		<ul role="list" class="services__grid">
+			{
+				services.map((service) => (
+					<li>
+						<InfoCard {...service} variant="outline-dark" />
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>
+
+<style>
+	.services {
+		background:
+			linear-gradient(180deg, rgb(18 20 24 / 0.97), rgb(18 20 24 / 0.97)),
+			repeating-linear-gradient(135deg, var(--color-dark-2) 0 2px, transparent 2px 14px);
+	}
+
+	.services__grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+		gap: 1rem;
+	}
+
+	@media (max-width: 640px) {
+		.services__grid {
+			grid-template-columns: 1fr;
+			gap: 0.6rem;
+		}
+	}
+</style>

@@ -1,0 +1,46 @@
+---
+/** Metadatos SEO y Open Graph. Valores por defecto en src/config/site.ts. */
+import { site } from '../../config/site';
+
+interface Props {
+	title?: string;
+	description?: string;
+	image?: string;
+	/** Ruta de la página (p. ej. '/'). Se combina con `site.url` para la canónica. */
+	path?: string;
+	noindex?: boolean;
+}
+
+const {
+	title = site.seo.title,
+	description = site.seo.description,
+	image = site.seo.ogImage,
+	path = Astro.url.pathname,
+	noindex = false,
+} = Astro.props;
+
+const base = Astro.site?.href ?? site.url;
+const canonical = new URL(path, base).href;
+const ogImage = new URL(image, base).href;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
+<meta name="theme-color" content={site.seo.themeColor} />
+
+<meta property="og:type" content="website" />
+<meta property="og:locale" content={site.locale} />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />

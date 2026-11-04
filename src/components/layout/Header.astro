@@ -1,0 +1,197 @@
+---
+import Logo from './Logo.astro';
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+import { navigation } from '../../config/site';
+import { whatsapp } from '../../config/whatsapp';
+import { buildWhatsAppUrl } from '../../utils/whatsapp';
+
+const quoteUrl = buildWhatsAppUrl(whatsapp.messages.general);
+---
+
+<header class="site-header" data-header>
+	<div class="container site-header__inner">
+		<Logo size={60} />
+
+		<button
+			class="site-header__toggle"
+			type="button"
+			aria-expanded="false"
+			aria-controls="primary-nav"
+			data-nav-toggle
+		>
+			<span class="visually-hidden" data-nav-label>Abrir menú</span>
+			<Icon name="menu" size={28} class="icon-open" />
+			<Icon name="close" size={28} class="icon-close" />
+		</button>
+
+		<nav id="primary-nav" class="site-nav" aria-label="Navegación principal" data-nav>
+			<ul role="list" class="site-nav__list">
+				{
+					navigation.map((link, i) => (
+						<li>
+							<a href={link.href} class="site-nav__link" aria-current={i === 0 ? 'true' : undefined}>
+								{link.label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+			<Button
+				href={quoteUrl}
+				external
+				size="sm"
+				iconStart="quote"
+				iconEnd="arrow-right"
+				class="site-header__cta"
+				aria-label="Solicitar cotización por WhatsApp (abre en una nueva pestaña)"
+			>
+				Solicitar cotización
+			</Button>
+		</nav>
+	</div>
+</header>
+
+<script>
+	import { initNavigation } from '../../scripts/navigation';
+	initNavigation();
+</script>
+
+<style>
+	.site-header {
+		position: sticky;
+		top: 0;
+		z-index: 50;
+		background: rgb(11 12 14 / 0.96);
+		backdrop-filter: blur(6px);
+		border-bottom: 1px solid rgb(246 195 18 / 0.35);
+		color: var(--color-white);
+	}
+
+	.site-header__inner {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1.5rem;
+		min-height: var(--header-h);
+	}
+
+	.site-nav {
+		display: flex;
+		align-items: center;
+		gap: 2.5rem;
+	}
+
+	.site-nav__list {
+		display: flex;
+		gap: 2.25rem;
+	}
+
+	.site-nav__link {
+		position: relative;
+		display: inline-block;
+		padding: 0.5rem 0;
+		font-weight: 600;
+		font-size: 0.95rem;
+		text-decoration: none;
+		color: var(--color-white);
+		transition: color var(--transition);
+	}
+
+	.site-nav__link::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 2px;
+		background: var(--color-yellow);
+		transform: scaleX(0);
+		transition: transform var(--transition);
+	}
+
+	.site-nav__link:hover,
+	.site-nav__link[aria-current='true'] {
+		color: var(--color-yellow);
+	}
+
+	.site-nav__link:hover::after,
+	.site-nav__link[aria-current='true']::after {
+		transform: scaleX(1);
+	}
+
+	.site-header__toggle {
+		display: none;
+		align-items: center;
+		justify-content: center;
+		width: 48px;
+		height: 48px;
+		background: transparent;
+		border: 0;
+		color: var(--color-white);
+		cursor: pointer;
+	}
+
+	.site-header__toggle .icon-close {
+		display: none;
+	}
+
+	@media (max-width: 900px) {
+		.site-header__toggle {
+			display: inline-flex;
+		}
+
+		.site-header__toggle[aria-expanded='true'] .icon-open {
+			display: none;
+		}
+
+		.site-header__toggle[aria-expanded='true'] .icon-close {
+			display: block;
+		}
+
+		.site-nav {
+			position: fixed;
+			inset: var(--header-h) 0 auto 0;
+			flex-direction: column;
+			align-items: stretch;
+			gap: 1.25rem;
+			padding: 1.25rem var(--gutter) 1.75rem;
+			background: var(--color-black);
+			border-bottom: 1px solid rgb(246 195 18 / 0.35);
+			max-height: calc(100dvh - var(--header-h));
+			overflow-y: auto;
+			visibility: hidden;
+			opacity: 0;
+			transform: translateY(-8px);
+			transition:
+				opacity var(--transition),
+				transform var(--transition),
+				visibility 0s linear 180ms;
+		}
+
+		.site-nav.is-open {
+			visibility: visible;
+			opacity: 1;
+			transform: none;
+			transition:
+				opacity var(--transition),
+				transform var(--transition);
+		}
+
+		.site-nav__list {
+			flex-direction: column;
+			gap: 0;
+		}
+
+		.site-nav__link {
+			display: block;
+			padding: 0.9rem 0;
+			font-size: 1.05rem;
+			border-bottom: 1px solid var(--color-dark-3);
+		}
+
+		.site-nav__link::after {
+			display: none;
+		}
+	}
+</style>

@@ -1,0 +1,239 @@
+---
+import Logo from './Logo.astro';
+import Icon from '../ui/Icon.astro';
+import { contact, navigation, site, socialLinks } from '../../config/site';
+import { whatsapp } from '../../config/whatsapp';
+import { buildWhatsAppUrl } from '../../utils/whatsapp';
+
+const year = new Date().getFullYear();
+const activeSocial = socialLinks.filter((s) => s.url);
+const waUrl = buildWhatsAppUrl(whatsapp.messages.general);
+---
+
+<footer class="site-footer" id="contacto">
+	<div class="container site-footer__grid">
+		<div class="site-footer__brand">
+			<Logo size={110} />
+		</div>
+
+		<section class="site-footer__col" aria-labelledby="footer-contact">
+			<h2 id="footer-contact" class="site-footer__title">Contacto</h2>
+			<ul role="list" class="site-footer__contact">
+				<li>
+					<Icon name="whatsapp" size={18} />
+					<a href={waUrl} target="_blank" rel="noopener noreferrer">WhatsApp</a>
+				</li>
+				{
+					contact.phoneDisplay && (
+						<li>
+							<Icon name="phone" size={18} />
+							<a href={contact.phoneHref}>{contact.phoneDisplay}</a>
+						</li>
+					)
+				}
+				{
+					contact.email && (
+						<li>
+							<Icon name="mail" size={18} />
+							<a href={`mailto:${contact.email}`}>{contact.email}</a>
+						</li>
+					)
+				}
+				{
+					contact.address && (
+						<li>
+							<Icon name="map-pin" size={18} />
+							<span>{contact.address}</span>
+						</li>
+					)
+				}
+				{
+					contact.schedule.length > 0 && (
+						<li>
+							<Icon name="clock" size={18} />
+							<span>
+								{contact.schedule.map((line) => (
+									<span class="site-footer__line">{line}</span>
+								))}
+							</span>
+						</li>
+					)
+				}
+			</ul>
+		</section>
+
+		<nav class="site-footer__col" aria-labelledby="footer-links">
+			<h2 id="footer-links" class="site-footer__title">Enlaces rápidos</h2>
+			<ul role="list" class="site-footer__links">
+				{
+					navigation.map((link) => (
+						<li>
+							<a href={link.href}>{link.label}</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+
+		<section class="site-footer__col" aria-labelledby="footer-social">
+			<h2 id="footer-social" class="site-footer__title">Síguenos</h2>
+			{
+				activeSocial.length > 0 ? (
+					<ul role="list" class="site-footer__social">
+						{activeSocial.map((s) => (
+							<li>
+								<a href={s.url} target="_blank" rel="noopener noreferrer" aria-label={s.label}>
+									<Icon name={s.icon} size={20} />
+								</a>
+							</li>
+						))}
+					</ul>
+				) : (
+					<p class="site-footer__muted">Redes sociales próximamente.</p>
+				)
+			}
+			<p class="site-footer__tagline">Motores que siguen en movimiento.</p>
+		</section>
+	</div>
+
+	<div class="site-footer__bottom">
+		<div class="container site-footer__bottom-inner">
+			<p>© {year} {site.name}. Todos los derechos reservados.</p>
+			<p>{site.tagline}</p>
+		</div>
+	</div>
+</footer>
+
+<style>
+	.site-footer {
+		background: var(--color-black);
+		color: var(--color-text-inverse);
+		font-size: 0.9rem;
+		/* Espacio para que el botón flotante no tape contenido */
+		padding-bottom: 0;
+	}
+
+	.site-footer__grid {
+		display: grid;
+		grid-template-columns: auto 1.4fr 1fr 1fr;
+		gap: 2.5rem;
+		padding-block: 3rem;
+	}
+
+	.site-footer__col + .site-footer__col {
+		border-left: 1px solid var(--color-dark-3);
+		padding-left: 2.5rem;
+	}
+
+	.site-footer__title {
+		font-size: 0.95rem;
+		font-weight: 700;
+		color: var(--color-white);
+		margin-bottom: 1rem;
+	}
+
+	.site-footer a {
+		color: var(--color-text-inverse);
+		text-decoration: none;
+	}
+
+	.site-footer a:hover {
+		color: var(--color-yellow);
+	}
+
+	.site-footer__contact {
+		display: grid;
+		gap: 0.65rem;
+	}
+
+	.site-footer__contact li {
+		display: flex;
+		gap: 0.65rem;
+		align-items: flex-start;
+	}
+
+	.site-footer__contact :global(.icon) {
+		color: var(--color-yellow);
+		margin-top: 0.15rem;
+	}
+
+	.site-footer__line {
+		display: block;
+	}
+
+	.site-footer__links {
+		display: grid;
+		gap: 0.45rem;
+	}
+
+	.site-footer__social {
+		display: flex;
+		gap: 0.6rem;
+		margin-bottom: 1.25rem;
+	}
+
+	.site-footer__social a {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 40px;
+		height: 40px;
+		border-radius: var(--radius-sm);
+		background: var(--color-dark-3);
+	}
+
+	.site-footer__social a:hover {
+		background: var(--color-yellow);
+		color: var(--color-black);
+	}
+
+	.site-footer__muted {
+		color: var(--color-text-inverse-muted);
+		margin-bottom: 1.25rem;
+	}
+
+	.site-footer__tagline {
+		color: var(--color-text-inverse-muted);
+	}
+
+	.site-footer__bottom {
+		border-top: 1px solid var(--color-dark-3);
+		font-size: 0.8rem;
+		color: var(--color-text-inverse-muted);
+	}
+
+	.site-footer__bottom-inner {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 0.5rem;
+		padding-block: 1.1rem;
+		padding-right: calc(var(--gutter) + 64px);
+	}
+
+	@media (max-width: 960px) {
+		.site-footer__grid {
+			grid-template-columns: 1fr 1fr;
+		}
+
+		.site-footer__brand {
+			grid-column: 1 / -1;
+		}
+
+		.site-footer__col + .site-footer__col {
+			border-left: 0;
+			padding-left: 0;
+		}
+	}
+
+	@media (max-width: 560px) {
+		.site-footer__grid {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+		}
+
+		.site-footer__bottom-inner {
+			flex-direction: column;
+		}
+	}
+</style>
