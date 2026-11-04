@@ -5,13 +5,12 @@
   "engines": {
     "node": ">=22.23.4"
   },
-"scripts": {
+  "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
-},
-  "dependencies": {
+    "preview": "astro preview"
+  },
+  "devDependencies": {
     "astro": "^7.4.5"
   }
 }
