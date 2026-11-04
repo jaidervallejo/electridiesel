@@ -1,0 +1,9 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <!-- [PROVISIONAL] Reemplazar por el logo real -->
+  <circle cx="60" cy="60" r="58" fill="#0b0c0e" stroke="#f6c312" stroke-width="4"/>
+  <circle cx="60" cy="60" r="47" fill="none" stroke="#f6c312" stroke-width="1.5"/>
+  <path d="M60 30l22 8v16c0 14-9.5 24-22 30-12.5-6-22-16-22-30V38z" fill="#f6c312"/>
+  <path d="M60 37l15 5.5v11.5c0 10-6.5 17-15 21.5-8.5-4.5-15-11.5-15-21.5V42.5z" fill="#0b0c0e"/>
+  <path d="M63 44l-9 13h6l-2 11 9-13h-6z" fill="#f6c312"/>
+  <text x="60" y="98" text-anchor="middle" font-family="Arial, sans-serif" font-size="8.5" font-weight="700" fill="#f6c312" letter-spacing=".5">ELECTRIDIESEL</text>
+</svg>
