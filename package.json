@@ -6,10 +6,10 @@
     "node": ">=22.23.4"
   },
 "scripts": {
-  "dev": "C:\\Users\\jvallejo\\AppData\\Local\\nvm\\v22.23.4\\npx.cmd astro dev",
-  "build": "C:\\Users\\jvallejo\\AppData\\Local\\nvm\\v22.23.4\\npx.cmd astro build",
-  "preview": "C:\\Users\\jvallejo\\AppData\\Local\\nvm\\v22.23.4\\npx.cmd astro preview",
-  "astro": "astro"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
 },
   "dependencies": {
     "astro": "^7.4.5"
