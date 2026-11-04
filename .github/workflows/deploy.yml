@@ -21,13 +21,18 @@ jobs:
 
     steps:
       - name: Descargar el código
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Configurar Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 22
+          node-version: 22.23.4
           cache: npm
+
+      - name: Comprobar versiones
+        run: |
+          node --version
+          npm --version
 
       - name: Instalar dependencias
         run: npm ci
@@ -43,9 +48,11 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - name: Publicar en GitHub Pages
         id: deployment
