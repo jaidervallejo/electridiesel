@@ -1,0 +1,5 @@
+﻿User-agent: *
+Allow: /
+
+# [PROVISIONAL] Actualizar con el dominio definitivo
+Sitemap: https://jaidervallejo.github.io/electridiesel/sitemap.xml

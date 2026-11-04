@@ -1,0 +1,22 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640">
+  <!-- [PROVISIONAL] Reemplazar por una foto real del motor (recomendado: WebP/AVIF ~1600px) -->
+  <defs>
+    <radialGradient id="g" cx="60%" cy="45%" r="65%">
+      <stop offset="0" stop-color="#3a3f47"/>
+      <stop offset="1" stop-color="#0b0c0e"/>
+    </radialGradient>
+  </defs>
+  <rect width="960" height="640" fill="url(#g)"/>
+  <g fill="none" stroke="#6b7280" stroke-width="6" stroke-linejoin="round" opacity=".85">
+    <rect x="330" y="230" width="380" height="230" rx="18"/>
+    <rect x="370" y="170" width="300" height="60" rx="10"/>
+    <path d="M330 300h-60v90h60M710 290h70v110h-70"/>
+    <circle cx="430" cy="500" r="40"/><circle cx="610" cy="500" r="40"/>
+    <path d="M400 230v-40M470 230v-40M540 230v-40M610 230v-40"/>
+  </g>
+  <g fill="#f6c312" opacity=".9">
+    <rect x="460" y="320" width="120" height="50" rx="6"/>
+  </g>
+  <text x="520" y="354" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#0b0c0e">MOTOR</text>
+  <text x="520" y="600" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#9ca3af">Imagen provisional</text>
+</svg>
